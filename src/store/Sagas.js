@@ -1,4 +1,4 @@
-import { takeLatest, delay, put } from 'redux-saga/effects';
+import { takeLatest, delay, put, call } from 'redux-saga/effects';
 
 import {
     GET_STEAM_DATA,
@@ -6,48 +6,75 @@ import {
 } from './../store/Actions';
 
 import {
-
+    fetchUserIdApi,
+    fetchUserProfile,
+    fetchGameLibrary,
 } from './../api/Api';
 
 function* getSteamData(payload) {
-    yield delay(500);
     yield put(setSteam({
         index: "retrieveUsernameState",
-        value: "loading",
+        value: "init",
     }));
-
-    yield delay(500);
-        yield put(setSteam({
-        index: "retrieveUsernameState",
-        value: "complete",
-    }));
-
-    yield delay(500);
-        yield put(setSteam({
+    yield put(setSteam({
         index: "retrieveProfileState",
-        value: "loading",
+        value: "init",
     }));
-
-    yield delay(500);
-        yield put(setSteam({
-        index: "retrieveProfileState",
-        value: "complete",
-    }));
-
-    yield delay(500);
-        yield put(setSteam({
+    yield put(setSteam({
         index: "retrieveLibraryState",
-        value: "loading",
+        value: "init",
     }));
+    yield put(setSteam({
+        index: "calculateCountState",
+        value: "init",
+    }));
+    yield delay(500);
+    try {
+        yield put(setSteam({
+            index: "retrieveUsernameState",
+            value: "loading",
+        }));
+        const steamUserIdResponse = yield call (fetchUserIdApi, payload.payload);
+        const steamUserId = steamUserIdResponse.data.data.steamid;
+        yield put(setSteam({
+            index: "retrieveUsernameState",
+            value: "complete",
+        }));
+
+        yield put(setSteam({
+            index: "retrieveProfileState",
+            value: "loading",
+        }));
+        const steamUserProfileResponse = yield call (fetchUserProfile, steamUserId);
+        yield put(setSteam({
+            index: "retrieveProfileState",
+            value: "complete",
+        }));
+
+        yield put(setSteam({
+            index: "retrieveLibraryState",
+            value: "loading",
+        }));
+        const steamUserLibraryResponse = yield call (fetchGameLibrary, steamUserId);
+        const steamUserLibrary = steamUserLibraryResponse.data.data;
+        yield put(setSteam({
+            index: "retrieveLibraryState",
+            value: "complete",
+        }));
+
+    } catch (error) {
+        yield delay(500);
+            yield put(setSteam({
+            index: "error",
+            value: true,
+        }));
+    }
+
+
+
 
     yield delay(500);
-        yield put(setSteam({
-        index: "retrieveLibraryState",
-        value: "complete",
-    }));
-
-    yield delay(500);
-        yield put(setSteam({
+    yield put(setSteam({
         index: "calculateCountState",
         value: "loading",
     }));

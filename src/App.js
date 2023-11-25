@@ -13,7 +13,7 @@ function App({
     calculateCountState,
     doGetSteamData,
 }) {
-    const [ username, setUsername ] = useState("");
+    const [ username, setUsername ] = useState("MrBlinko");
     const handleChange = (event) => {
         setUsername(event.target.value);
     };
