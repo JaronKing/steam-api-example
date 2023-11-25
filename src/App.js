@@ -1,4 +1,9 @@
 import React, { useState } from "react";
+import { connect } from "react-redux";
+
+import {
+    getSteamData,
+} from "./store/Actions";
 
 function App() {
     const [ username, setUsername ] = useState("");
@@ -6,6 +11,7 @@ function App() {
         setUsername(event.target.value);
     };
     const handleSubmit = () => {
+        if (username === "") return;
         console.log(username);
     }
     return (
@@ -61,4 +67,12 @@ function App() {
     );
 }
 
-export default App;
+const mapDispatchToProps = (dispatch) => ({
+    doGetSteamData: (username) => dispatch(getSteamData(username)),
+});
+
+const mapStateToProps = (state) => ({
+
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
