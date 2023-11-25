@@ -5,6 +5,9 @@ function App() {
     const handleChange = (event) => {
         setUsername(event.target.value);
     };
+    const handleSubmit = () => {
+        console.log(username);
+    }
     return (
         <div className="bg-teal-100 min-h-screen pt-24">
             <div className="max-w-xl m-auto bg-green-300 text-center p-4 rounded-3xl">
@@ -19,7 +22,10 @@ function App() {
                     w-auto border-2 border-slate-300 rounded-md py-2 my-5
                     justify-self-center text-center m-auto"
                 />
-                <button className="bg-blue-500 mt-4 p-4 rounded-3xl hover:bg-blue-600">Calculate Game Library</button>
+                <button className="bg-blue-500 mt-4 p-4 rounded-3xl hover:bg-blue-600"
+                    onClick={handleSubmit}>
+                    Calculate Game Library
+                </button>
             </div>
             <div className="max-w-lg m-auto text-center bg-gray-300">
                 <div className="grid grid-cols-4 gap-2 p-2">
