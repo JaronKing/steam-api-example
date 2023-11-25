@@ -5,7 +5,14 @@ import {
     getSteamData,
 } from "./store/Actions";
 
-function App() {
+function App({
+    state,
+    retrieveUsernameState,
+    retrieveProfileState,
+    retrieveLibraryState,
+    calculateCountState,
+    doGetSteamData,
+}) {
     const [ username, setUsername ] = useState("");
     const handleChange = (event) => {
         setUsername(event.target.value);
@@ -13,6 +20,8 @@ function App() {
     const handleSubmit = () => {
         if (username === "") return;
         console.log(username);
+        console.log(state);
+        doGetSteamData(username);
     }
     return (
         <div className="bg-teal-100 min-h-screen pt-24">
@@ -37,23 +46,51 @@ function App() {
                 <div className="grid grid-cols-4 gap-2 p-2">
                     <div>
                         Retrieve Username
-                        <div className="bg-yellow-100">loading...</div>
-                        <div className="bg-green-200">complete</div>
+                        { retrieveUsernameState === "loading" &&
+                            <div className="bg-yellow-100">loading...</div>
+                        }
+                        { retrieveUsernameState === "complete" &&
+                            <div className="bg-green-200">complete</div>
+                        }
+                        { retrieveUsernameState === "error" &&
+                            <div className="bg-red-200">error</div>
+                        }
                     </div>
                     <div>
                         Retrieve User Profile
-                        <div className="bg-yellow-100">loading...</div>
-                        <div className="bg-green-200">complete</div>
+                        { retrieveProfileState === "loading" &&
+                            <div className="bg-yellow-100">loading...</div>
+                        }
+                        { retrieveProfileState === "complete" &&
+                            <div className="bg-green-200">complete</div>
+                        }
+                        { retrieveProfileState === "error" &&
+                            <div className="bg-red-200">error</div>
+                        }
                     </div>
                     <div>
                         Retrieve Game Library
-                        <div className="bg-yellow-100">loading...</div>
-                        <div className="bg-green-200">complete</div>
+                        { retrieveLibraryState === "loading" &&
+                            <div className="bg-yellow-100">loading...</div>
+                        }
+                        { retrieveLibraryState === "complete" &&
+                            <div className="bg-green-200">complete</div>
+                        }
+                        { retrieveLibraryState === "error" &&
+                            <div className="bg-red-200">error</div>
+                        }
                     </div>
                     <div>
                         Calculate Game Count
-                        <div className="bg-yellow-100">loading...</div>
-                        <div className="bg-green-200">complete</div>
+                        { calculateCountState === "loading" &&
+                            <div className="bg-yellow-100">loading...</div>
+                        }
+                        { calculateCountState === "complete" &&
+                            <div className="bg-green-200">complete</div>
+                        }
+                        { calculateCountState === "error" &&
+                            <div className="bg-red-200">error</div>
+                        }
                     </div>
                 </div>
             </div>
@@ -72,7 +109,11 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 const mapStateToProps = (state) => ({
-
+    state: state,
+    retrieveUsernameState: state.retrieveUsernameState,
+    retrieveProfileState: state.retrieveProfileState,
+    retrieveLibraryState: state.retrieveLibraryState,
+    calculateCountState: state.calculateCountState,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
