@@ -11,6 +11,7 @@ function App({
     retrieveProfileState,
     retrieveLibraryState,
     calculateCountState,
+    gameCountOver100,
     doGetSteamData,
 }) {
     const [ username, setUsername ] = useState("MrBlinko");
@@ -19,8 +20,6 @@ function App({
     };
     const handleSubmit = () => {
         if (username === "") return;
-        console.log(username);
-        console.log(state);
         doGetSteamData(username);
     }
     return (
@@ -52,9 +51,6 @@ function App({
                         { retrieveUsernameState === "complete" &&
                             <div className="bg-green-200">complete</div>
                         }
-                        { retrieveUsernameState === "error" &&
-                            <div className="bg-red-200">error</div>
-                        }
                     </div>
                     <div>
                         Retrieve User Profile
@@ -63,9 +59,6 @@ function App({
                         }
                         { retrieveProfileState === "complete" &&
                             <div className="bg-green-200">complete</div>
-                        }
-                        { retrieveProfileState === "error" &&
-                            <div className="bg-red-200">error</div>
                         }
                     </div>
                     <div>
@@ -76,9 +69,6 @@ function App({
                         { retrieveLibraryState === "complete" &&
                             <div className="bg-green-200">complete</div>
                         }
-                        { retrieveLibraryState === "error" &&
-                            <div className="bg-red-200">error</div>
-                        }
                     </div>
                     <div>
                         Calculate Game Count
@@ -88,18 +78,17 @@ function App({
                         { calculateCountState === "complete" &&
                             <div className="bg-green-200">complete</div>
                         }
-                        { calculateCountState === "error" &&
-                            <div className="bg-red-200">error</div>
-                        }
                     </div>
                 </div>
             </div>
-            <div className="max-w-lg m-auto text-center bg-gray-200 p-4 rounded-b-3xl">
-                <span>
-                    100 Games with over 100 hours played on steam.<br/>
-                    Time to get a new hobby
-                </span>
-            </div>
+            { calculateCountState === "complete" &&
+                <div className="max-w-lg m-auto text-center bg-gray-200 p-4 rounded-b-3xl">
+                    <span>
+                        { gameCountOver100 } games with over 100 hours played on steam.<br/>
+                        Time to get a new hobby
+                    </span>
+                </div>
+            }
         </div>
     );
 }
@@ -114,6 +103,7 @@ const mapStateToProps = (state) => ({
     retrieveProfileState: state.retrieveProfileState,
     retrieveLibraryState: state.retrieveLibraryState,
     calculateCountState: state.calculateCountState,
+    gameCountOver100: state.gameCountOver100,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

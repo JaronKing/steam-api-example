@@ -8,6 +8,7 @@ const initialState = {
     retrieveProfileState: "init",
     retrieveLibraryState: "init",
     calculateCountState: "init",
+    gameCountOver100: 0,
 };
 
 const steamReducer = (state = initialState, action) => {

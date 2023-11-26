@@ -47,6 +47,10 @@ function* getSteamData(payload) {
         }));
         const steamUserProfileResponse = yield call (fetchUserProfile, steamUserId);
         yield put(setSteam({
+            index: "UserProfile",
+            value: steamUserProfileResponse.data.data,
+        }));
+        yield put(setSteam({
             index: "retrieveProfileState",
             value: "complete",
         }));
@@ -58,32 +62,42 @@ function* getSteamData(payload) {
         const steamUserLibraryResponse = yield call (fetchGameLibrary, steamUserId);
         const steamUserLibrary = steamUserLibraryResponse.data.data;
         yield put(setSteam({
+            index: "steamUserLibrary",
+            value: steamUserLibrary,
+        }));
+        yield put(setSteam({
             index: "retrieveLibraryState",
             value: "complete",
         }));
 
+        yield put(setSteam({
+            index: "calculateCountState",
+            value: "loading",
+        }));
+        console.log(steamUserLibrary["games"]);
+        let gameCountOver100 = 0;
+        steamUserLibrary["games"].map((game) => {
+            console.log(game);
+            let hoursPlayed = game["playtime_forever"] / 60;
+            if (hoursPlayed >= 100) gameCountOver100 += 1;
+            return true;
+        });
+        yield put(setSteam({
+            index: "gameCountOver100",
+            value: gameCountOver100,
+        }));
+        yield put(setSteam({
+            index: "calculateCountState",
+            value: "complete",
+        }));
     } catch (error) {
-        yield delay(500);
-            yield put(setSteam({
+        console.log(error);
+        yield put(setSteam({
             index: "error",
             value: true,
         }));
     }
 
-
-
-
-    yield delay(500);
-    yield put(setSteam({
-        index: "calculateCountState",
-        value: "loading",
-    }));
-
-    yield delay(500);
-        yield put(setSteam({
-        index: "calculateCountState",
-        value: "complete",
-    }));
 }
 
 function* dataSaga() {
