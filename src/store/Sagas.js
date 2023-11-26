@@ -13,6 +13,10 @@ import {
 
 function* getSteamData(payload) {
     yield put(setSteam({
+        index: "error",
+        value: false,
+    }));
+    yield put(setSteam({
         index: "retrieveUsernameState",
         value: "init",
     }));

@@ -12,6 +12,7 @@ function App({
     retrieveLibraryState,
     calculateCountState,
     gameCountOver100,
+    error,
     doGetSteamData,
 }) {
     const [ username, setUsername ] = useState("MrBlinko");
@@ -89,6 +90,13 @@ function App({
                     </span>
                 </div>
             }
+            { error &&
+                <div className="max-w-lg m-auto text-center bg-red-200 p-4 rounded-b-3xl">
+                    <span >
+                        Error occurred...
+                    </span>
+                </div>
+            }
         </div>
     );
 }
@@ -104,6 +112,7 @@ const mapStateToProps = (state) => ({
     retrieveLibraryState: state.retrieveLibraryState,
     calculateCountState: state.calculateCountState,
     gameCountOver100: state.gameCountOver100,
+    error: state.error,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

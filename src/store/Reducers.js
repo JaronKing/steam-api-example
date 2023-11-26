@@ -9,6 +9,7 @@ const initialState = {
     retrieveLibraryState: "init",
     calculateCountState: "init",
     gameCountOver100: 0,
+    error: false,
 };
 
 const steamReducer = (state = initialState, action) => {
